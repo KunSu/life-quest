@@ -33,9 +33,9 @@ describe('PATCH /api/user/theme', () => {
     const response = await PATCH(request);
     const payload = await response.json();
     const db = getDatabase();
-    const row = db
-      .prepare('select theme_mode from users limit 1')
-      .get() as { theme_mode: string } | undefined;
+    const row = db.prepare('select theme_mode from users limit 1').get() as
+      | { theme_mode: string }
+      | undefined;
 
     expect(response.status).toBe(200);
     expect(payload).toEqual({ data: { themeMode: 'adventure' } });

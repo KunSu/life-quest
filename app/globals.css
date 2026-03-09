@@ -2,7 +2,7 @@ html {
   color-scheme: light;
 }
 
-html[data-theme="adventure"] {
+html[data-theme='adventure'] {
   color-scheme: dark;
 }
 
@@ -14,11 +14,7 @@ body {
     linear-gradient(180deg, var(--background) 0%, var(--gradientEnd) 100%);
   color: var(--foreground);
   font-family:
-    'Azeret Mono',
-    'IBM Plex Sans',
-    ui-sans-serif,
-    system-ui,
-    sans-serif;
+    'Azeret Mono', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 * {

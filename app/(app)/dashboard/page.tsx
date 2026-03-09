@@ -12,7 +12,9 @@ export default async function DashboardPage() {
   bootstrapDatabase();
   const cookieStore = await cookies();
   const cookieTheme = cookieStore.get(THEME_COOKIE_NAME)?.value;
-  const themeMode = cookieTheme ? resolveThemeMode(cookieTheme) : getDemoUserTheme();
+  const themeMode = cookieTheme
+    ? resolveThemeMode(cookieTheme)
+    : getDemoUserTheme();
 
   return (
     <AppShell

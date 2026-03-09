@@ -45,5 +45,7 @@ test('respects an existing cookie before paint @m0.5', async ({
 
   await page.goto('/dashboard');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'adventure');
-  await expect(page.getByRole('button', { name: /switch to modern/i })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /switch to modern/i }),
+  ).toBeVisible();
 });

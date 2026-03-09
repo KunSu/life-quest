@@ -3,18 +3,18 @@ import type { ThemeMode } from '@/src/shared/schemas/user';
 
 export function getDemoUserTheme(): ThemeMode {
   const db = getDatabase();
-  const row = db
-    .prepare('select theme_mode from users limit 1')
-    .get() as { theme_mode: string } | undefined;
+  const row = db.prepare('select theme_mode from users limit 1').get() as
+    | { theme_mode: string }
+    | undefined;
 
   return row?.theme_mode === 'adventure' ? 'adventure' : 'modern';
 }
 
 export function updateDemoUserTheme(themeMode: ThemeMode) {
   const db = getDatabase();
-  const row = db
-    .prepare('select id from users limit 1')
-    .get() as { id: string } | undefined;
+  const row = db.prepare('select id from users limit 1').get() as
+    | { id: string }
+    | undefined;
 
   if (!row) {
     throw new Error('Demo user missing');

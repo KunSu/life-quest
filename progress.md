@@ -29,6 +29,7 @@
 - Strengthened DB coverage so tests now verify `busy_timeout=5000`, exactly one seeded demo user, and an isolated DB path per test run.
 - Added `tests/integration/health.route.test.ts` to verify the runtime health route bootstraps SQLite.
 - Forced `/dashboard` to render dynamically and verified in production that requesting `/dashboard` creates the SQLite file and seeds one user.
+
 ## Task 4: E2E RED state
 
 - Test 1 (`resolves the stored theme on first render`): FAIL — `/dashboard` returns error (no `data-theme` attribute, theme switcher button missing)
