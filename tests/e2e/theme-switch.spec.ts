@@ -5,6 +5,13 @@ test('resolves the stored theme on first render @m0.5', async ({
   baseURL,
   page,
 }) => {
+  // Reset DB to known baseline before asserting initial state
+  await page.request.fetch('/api/user/theme', {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json' },
+    data: JSON.stringify({ themeMode: 'modern' }),
+  });
+
   await page.goto('/dashboard');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'modern');
 
@@ -33,7 +40,6 @@ test('respects an existing cookie before paint @m0.5', async ({
       name: 'life-quest-theme',
       value: 'adventure',
       url: baseURL!,
-      path: '/',
     },
   ]);
 
