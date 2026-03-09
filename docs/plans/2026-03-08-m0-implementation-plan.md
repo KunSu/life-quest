@@ -13,6 +13,7 @@
 ### Task 1: Lock the Milestone 0 contract
 
 **Files:**
+
 - Create: `docs/contracts/m0-contract.md`
 - Update: `task_plan.md`
 - Update: `progress.md`
@@ -25,10 +26,12 @@ Create `docs/contracts/m0-contract.md` with:
 # Milestone 0 Contract: App Shell and Local Persistence
 
 ## API Interface
+
 - `GET /api/health`
 - Response type: `{ data: { status: 'ok'; app: 'life-quest'; storage: 'sqlite' } }`
 
 ## DB Schema Diff
+
 - Add `users` table with:
   - `id TEXT PRIMARY KEY`
   - `display_name TEXT NOT NULL`
@@ -40,22 +43,26 @@ Create `docs/contracts/m0-contract.md` with:
   - `updated_at TEXT NOT NULL`
 
 ## Page Routes
+
 - `/dashboard` - mobile-first placeholder dashboard shell
 
 ## Zod Schemas
+
 - None required in Milestone 0 beyond future placeholders
 
 ## Acceptance Criteria
+
 - Given the app boots, when I open `/dashboard`, then I see a mobile-first dashboard shell
 - Given the app is running, when I call `/api/health`, then I receive the agreed JSON envelope
 - Given the DB initializes, when I query the seeded user, then one demo user exists
 
 ## File Ownership
-| Agent | Files |
-|-------|-------|
-| Backend | `src/db/*`, `app/api/health/route.ts`, `src/lib/errors.ts` |
+
+| Agent    | Files                                                                                                       |
+| -------- | ----------------------------------------------------------------------------------------------------------- |
+| Backend  | `src/db/*`, `app/api/health/route.ts`, `src/lib/errors.ts`                                                  |
 | Frontend | `app/layout.tsx`, `app/(app)/layout.tsx`, `app/(app)/dashboard/page.tsx`, `components/*`, `app/globals.css` |
-| QA | `tests/e2e/*`, validation notes |
+| QA       | `tests/e2e/*`, validation notes                                                                             |
 ```
 
 **Step 2: Update planning memory**
@@ -70,6 +77,7 @@ Expected: `contract ready`
 ### Task 2: Bootstrap the repo toolchain and config
 
 **Files:**
+
 - Create: `package.json`
 - Create: `pnpm-workspace.yaml`
 - Create: `.gitignore`
@@ -125,6 +133,7 @@ Expected: install completes without lockfile errors.
 **Step 3: Write strict config files**
 
 Create the remaining files with:
+
 - `TypeScript`: `strict: true`, `noUncheckedIndexedAccess: true`
 - `ESLint`: `next/core-web-vitals`
 - `Prettier`: `tabWidth: 2`, `singleQuote: true`, `trailingComma: 'all'`
@@ -142,12 +151,14 @@ pnpm typecheck || true
 ```
 
 Expected:
+
 - `pnpm install` succeeds
 - `lint` and `typecheck` may fail because app files are not created yet, but config loading itself must work without "command not found" or parser setup errors
 
 ### Task 3: Add the first failing Milestone 0 E2E
 
 **Files:**
+
 - Create: `tests/e2e/app-shell.spec.ts`
 - Update: `playwright.config.ts`
 - Update: `package.json`
@@ -159,7 +170,10 @@ Create `tests/e2e/app-shell.spec.ts`:
 ```typescript
 import { expect, test } from '@playwright/test';
 
-test('loads dashboard shell and health endpoint @m0', async ({ page, request }) => {
+test('loads dashboard shell and health endpoint @m0', async ({
+  page,
+  request,
+}) => {
   const response = await request.get('/api/health');
   expect(response.ok()).toBeTruthy();
   await expect(response).toHaveJSON({
@@ -167,7 +181,9 @@ test('loads dashboard shell and health endpoint @m0', async ({ page, request }) 
   });
 
   await page.goto('/dashboard');
-  await expect(page.getByRole('heading', { name: /life quest/i })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: /life quest/i }),
+  ).toBeVisible();
   await expect(page.getByText(/dashboard/i)).toBeVisible();
 });
 ```
@@ -188,6 +204,7 @@ Append the observed failure reason to `progress.md`.
 ### Task 4: Make the app shell and health route pass
 
 **Files:**
+
 - Create: `app/layout.tsx`
 - Create: `app/(app)/layout.tsx`
 - Create: `app/(app)/dashboard/page.tsx`
@@ -199,6 +216,7 @@ Append the observed failure reason to `progress.md`.
 **Step 1: Write the minimal implementation**
 
 Create the page tree so `/dashboard` renders a mobile-first shell with:
+
 - app title `Life Quest`
 - subtitle containing `Dashboard`
 - a responsive container that works from 375px upward
@@ -234,6 +252,7 @@ Expected: both pass
 ### Task 5: Add the failing database integration test
 
 **Files:**
+
 - Create: `tests/integration/db.client.test.ts`
 - Create: `src/db/schema.ts`
 - Create: `src/db/client.ts`
@@ -256,7 +275,9 @@ describe('database bootstrap', () => {
 
     const journalMode = db.pragma('journal_mode', { simple: true });
     const foreignKeys = db.pragma('foreign_keys', { simple: true });
-    const user = db.prepare('select display_name, theme_mode from users limit 1').get();
+    const user = db
+      .prepare('select display_name, theme_mode from users limit 1')
+      .get();
 
     expect(journalMode).toBe('wal');
     expect(foreignKeys).toBe(1);
@@ -280,6 +301,7 @@ Append the failure reason to `progress.md`.
 ### Task 6: Implement SQLite bootstrap, schema, and seed
 
 **Files:**
+
 - Update: `src/db/client.ts`
 - Update: `src/db/schema.ts`
 - Update: `src/db/seed.ts`
@@ -289,6 +311,7 @@ Append the failure reason to `progress.md`.
 **Step 1: Implement the DB client**
 
 `src/db/client.ts` must:
+
 - open SQLite from `./data/life-quest.db` by default
 - execute:
 
@@ -303,6 +326,7 @@ PRAGMA foreign_keys=ON;
 **Step 2: Implement schema and seed**
 
 Add the `users` table definition and seed one demo user with:
+
 - `display_name = 'Demo Hero'`
 - `theme_mode = 'modern'`
 - `level = 1`
@@ -322,6 +346,7 @@ Expected: still PASS
 ### Task 7: Final Milestone 0 validation pack
 
 **Files:**
+
 - Update: `task_plan.md`
 - Update: `progress.md`
 - Create: `docs/reviews/m0-review.md`
@@ -347,6 +372,7 @@ Capture one screenshot at `375px` and one at `1440px` of `/dashboard`.
 **Step 3: Write the review note**
 
 Create `docs/reviews/m0-review.md` with:
+
 - changed files
 - validation results
 - known risks
