@@ -12,7 +12,7 @@ export default defineConfig({
   },
   webServer: useManagedWebServer
     ? {
-        command: 'pnpm dev -- --port 3100',
+        command: 'pnpm exec next dev --port 3100',
         url: `${baseURL}/dashboard`,
         reuseExistingServer: !process.env.CI,
       }
@@ -22,6 +22,13 @@ export default defineConfig({
       name: 'mobile',
       use: {
         ...devices['iPhone 13'],
+      },
+    },
+    {
+      name: 'desktop',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1440, height: 1200 },
       },
     },
   ],
