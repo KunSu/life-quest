@@ -4,7 +4,22 @@ import { updateDemoUserTheme } from '@/src/server/user/service';
 import { updateThemeSchema } from '@/src/shared/schemas/user';
 
 export async function PATCH(request: Request) {
-  const payload = await request.json();
+  let payload: unknown;
+
+  try {
+    payload = await request.json();
+  } catch {
+    return NextResponse.json(
+      {
+        error: {
+          code: 'invalid_input',
+          message: 'Invalid theme payload',
+        },
+      },
+      { status: 400 },
+    );
+  }
+
   const parsed = updateThemeSchema.safeParse(payload);
 
   if (!parsed.success) {

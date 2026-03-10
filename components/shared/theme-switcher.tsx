@@ -16,22 +16,24 @@ export function ThemeSwitcher({ initialTheme }: ThemeSwitcherProps) {
   async function handleToggle() {
     setIsPending(true);
 
-    const response = await fetch('/api/user/theme', {
-      method: 'PATCH',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ themeMode: nextTheme }),
-    });
+    try {
+      const response = await fetch('/api/user/theme', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ themeMode: nextTheme }),
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        return;
+      }
+
+      startTransition(() => {
+        document.documentElement.dataset.theme = nextTheme;
+        setThemeMode(nextTheme);
+      });
+    } finally {
       setIsPending(false);
-      return;
     }
-
-    startTransition(() => {
-      document.documentElement.dataset.theme = nextTheme;
-      setThemeMode(nextTheme);
-      setIsPending(false);
-    });
   }
 
   return (
